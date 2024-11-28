@@ -20,9 +20,9 @@ public class CannonTower : MonoBehaviour, ITower
     {
         if (ProjectilePrefab == null || ShootPoint == null) return;
 
-        foreach (var target in FindObjectsOfType<MonoBehaviour>().OfType<ITarget>())
+        foreach (var target in FindObjectsOfType<MonoBehaviour>().OfType<IDamagable>())
         {
-            if (Vector3.Distance(transform.position, target.Position) > Range) continue;
+            //if (Vector3.Distance(transform.position, target.Position) > Range) continue;
             if (_lastShotTime + ShootInterval > Time.time) continue;
 
             Shoot(target);
@@ -30,11 +30,11 @@ public class CannonTower : MonoBehaviour, ITower
         }
     }
 
-    private void Shoot(ITarget target)
+    private void Shoot(IDamagable target)
     {
         var projectileObject = Instantiate(ProjectilePrefab, ShootPoint.position, ShootPoint.rotation);
         var projectile = projectileObject.GetComponent<IProjectile>();
-        projectile.Initialize(target, 0.2f, 10);
+        //projectile.Initialize(target, 0.2f, 10);
     }
 }
 

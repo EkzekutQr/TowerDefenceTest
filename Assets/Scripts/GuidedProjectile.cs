@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GuidedProjectile : MonoBehaviour, IProjectile
+public class GuidedProjectile : ProjectileBase
 {
-    private ITarget _target;
-    private float _speed;
-    private int _damage;
+    protected Transform _target;
+    protected float _speed;
+    protected int _damage;
 
-    public void Initialize(ITarget target, float speed, int damage)
+    public override void Initialize(Transform target, float speed, int damage)
     {
         _target = target;
         _speed = speed;
         _damage = damage;
     }
 
-    void Update()
+    protected void FixedUpdate()
     {
         if (_target == null)
         {
@@ -25,27 +25,19 @@ public class GuidedProjectile : MonoBehaviour, IProjectile
         MoveTowardsTarget();
     }
 
-    private void MoveTowardsTarget()
+    protected void MoveTowardsTarget()
     {
-        var translation = _target.Position - transform.position;
-        if (translation.magnitude > _speed)
-        {
-            translation = translation.normalized * _speed;
-        }
+        var translation = _target.position - transform.position;
+        translation = translation.normalized * _speed * Time.fixedDeltaTime;
         transform.Translate(translation);
     }
 
-    void OnTriggerEnter(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {
-        var target = other.GetComponent<ITarget>();
-        if (target == null) return;
-
-        target.TakeDamage(_damage);
-        Destroy(gameObject);
+        if (other.transform == _target.transform)
+        {
+            other.GetComponent<IDamagable>().TakeDamage(_damage);
+            Destroy(gameObject);
+        }
     }
-}
-
-public interface IProjectile
-{
-    void Initialize(ITarget target, float speed, int damage);
 }

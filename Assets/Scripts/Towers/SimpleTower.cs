@@ -32,6 +32,6 @@ public class SimpleTower : MonoBehaviour
     {
         var projectileObject = Instantiate(ProjectilePrefab, transform.position + Vector3.up * 1.5f, Quaternion.identity);
         var projectile = projectileObject.GetComponent<GuidedProjectile>();
-        projectile.Initialize(monster, 0.2f, 10);
+        //projectile.Initialize(monster, 0.2f, 10);
     }
 }

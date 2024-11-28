@@ -1,4 +1,6 @@
-﻿public interface ISpawnHandler
+﻿using UnityEngine;
+
+public interface ISpawnHandler
 {
-    Monster SpawnHandler();
+    GameObject SpawnHandler();
 }

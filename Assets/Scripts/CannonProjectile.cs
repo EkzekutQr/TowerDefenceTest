@@ -1,33 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CannonProjectile : MonoBehaviour, IProjectile
+public class CannonProjectile : ProjectileBase
 {
-    private ITarget _target;
-    private float _speed;
-    private int _damage;
+    protected Transform _target;
+    protected float _speed;
+    protected int _damage;
 
-    public void Initialize(ITarget target, float speed, int damage)
+    public override void Initialize(Transform target, float speed, int damage)
     {
         _target = target;
         _speed = speed;
         _damage = damage;
     }
 
-    void Update()
+    protected void OnTriggerEnter(Collider other)
     {
-        MoveForward();
-    }
-
-    private void MoveForward()
-    {
-        var translation = transform.forward * _speed;
-        transform.Translate(translation);
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        var target = other.GetComponent<ITarget>();
+        var target = other.GetComponent<IDamagable>();
         if (target == null) return;
 
         target.TakeDamage(_damage);
